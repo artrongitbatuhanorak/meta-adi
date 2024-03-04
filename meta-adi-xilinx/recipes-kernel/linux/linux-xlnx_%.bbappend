@@ -6,7 +6,7 @@ PV = "${LINUX_VERSION}-${ADI_VERSION}+git${SRCPV}"
 KBRANCH = "2022_R2"
 # needed for offline build
 SRCREV = "${@ "cd7e20c430dc19df7c32610e9d5b494d8f313e07" if bb.utils.to_boolean(d.getVar('BB_NO_NETWORK')) else d.getVar('AUTOREV')}"
-KERNELURI = "git://github.com/analogdevicesinc/linux.git;protocol=https"
+KERNELURI = "git://github.com/artrongitbatuhanorak/linux.git;protocol=https"
 
 # override kernel config file
 KBUILD_DEFCONFIG:zynq = "zynq_xcomm_adv7511_defconfig"
