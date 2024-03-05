@@ -51,7 +51,8 @@ SRC_URI:append:zynqmp = " \
 		file://pl-delete-nodes-zynqmp-zcu102-rev10-adrv9002-rx2tx1.dtsi \
 		file://pl-delete-nodes-zynqmp-zcu102-rev10-adrv9002-rx2tx2.dtsi \
 		file://pl-delete-nodes-zynqmp-adrv9009-zu11eg-revb-adrv2crr-fmc-revb-jesd204-fsm.dtsi \
-		file://pl-delete-nodes-zynqmp-adrv9009-zu11eg-revb-adrv2crr-fmc-revb-sync-fmcomms8-jesd204-fsm.dtsi"
+		file://pl-delete-nodes-zynqmp-adrv9009-zu11eg-revb-adrv2crr-fmc-revb-sync-fmcomms8-jesd204-fsm.dtsi\
+		file://zynqmp-zcu102-rev10-adrv9002-rx2tx1.dts"
 
 SRC_URI:append:microblaze = " \
 		file://pl-delete-nodes-fmcdaq2.dtsi \
@@ -72,6 +73,8 @@ SRC_URI:append:versal = " \
 		file://pl-delete-nodes-versal-vck190-reva-ad9081.dtsi \
 		file://pl-delete-nodes-versal-vck190-reva-ad9081-204c-txmode22-rxmode23.dtsi \
 		file://pl-delete-nodes-versal-vck190-reva-ad9082-204c-txmode22-rxmode23.dtsi"
+		
+KERNEL_DTB = "zynqmp-zcu102-rev10-adrv9002-rx2tx1"
 
 python __anonymous() {
     if not d.getVar("KERNEL_DTB"):
@@ -103,6 +106,7 @@ DTS_BASE:zynq ?= "${DTS_INCLUDE_PATH}/zynq-zc706"
 DTS_BASE:zynqmp ?= "${DTS_INCLUDE_PATH}/zynqmp-zcu102-rev1.0"
 DTS_BASE:microblaze ?= "${DTS_INCLUDE_PATH}/vc707"
 DTS_BASE:versal ?= "${DTS_INCLUDE_PATH}/versal-vck190-revA"
+
 DTS_OVERLAY ?= "pl-${KERNEL_DTB}-overlay.dtsi"
 DTS_OVERLAY_PATH ?= "${WORKDIR}"
 # Make sure that the kernel sources are available
@@ -161,10 +165,14 @@ do_configure:append() {
 		return 0
 	fi
 
-	[ ! -e "${KERNEL_DTB_PATH}/${KERNEL_DTB}.dts" ] && \
-		{ bbfatal "Error: Could not find selected device tree:\"${KERNEL_DTB}.dts\" in:\"${KERNEL_DTB_PATH}\"!!"; }
 
-	cp "${KERNEL_DTB_PATH}/${KERNEL_DTB}.dts" "${DT_FILES_PATH}/system-top.dts"
+#	[ ! -e "${KERNEL_DTB_PATH}/${KERNEL_DTB}.dts" ] && \
+#		{ bbfatal "Error: Could not find selected device tree:\"${KERNEL_DTB}.dts\" in:\"${KERNEL_DTB_PATH}\"!!"; }
+#-------------------------------------------------------------------------------
+
+	cp "${WORKDIR}/${KERNEL_DTB}.dts" "${DT_FILES_PATH}/system-top.dts"
+	
+#--------------------------------------------------------------------------------
 
 	# corner cases
 	case "${KERNEL_DTB}" in
